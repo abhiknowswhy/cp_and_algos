@@ -1,3 +1,4 @@
+Merge sort algorithm:
 
 Merge Sort is a divide and conquer algorithm. It works by recursively dividing the array into two halves, sorting each half, and then merging the sorted halves back together.
 - Recursively split the array in half until each part has only one element (a single-element array is always sorted).
