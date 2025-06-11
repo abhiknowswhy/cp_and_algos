@@ -1,7 +1,15 @@
 # BIT Tree (Fenwick tree)
 
-A Fenwick Tree (or Binary Indexed Tree, BIT) is another data structure similar to Segment tree that provides efficient methods for prefix sum queries and updates on an array. It's especially useful when you need to perform these operations multiple times on a large array.
+A Fenwick Tree or Binary Indexed Tree (BIT) is a simpler and more space-efficient structure optimized for prefix-based operations like prefix sum and prefix XOR.
 
+Unlike Segment tree, fenwick tree doesn't support range queries for operations which don't have inverses.
+
+Fenwick tree supports only `Associative and Invertible` operations
+
+- Sum
+- Product
+- Frequency counting
+- XOR
 
 ```cpp
 #include <iostream>
@@ -66,10 +74,9 @@ int main() {
 
 ## Explanation:
 
-
 ### 📊 BIT Range Table (for reference)
 
-Let's start with a BIT tree array of size 8. The array would contain the following elements. 
+Let's start with a BIT tree array of size 8. The array would contain the following elements.
 
 | Index (i) | `bit[i]` stores sum of              |
 | --------- | ----------------------------------- |
