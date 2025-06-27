@@ -52,3 +52,9 @@ int main() {
     return 0;
 }
 ```
+
+## String
+
+- stoi(string String) -> converts a string with all numbers to integers
+- to_string() -> converts a class that implements to_string() method into string
+- 

@@ -14,7 +14,7 @@ For example, if an array of 7 days' prices is given as {100, 80, 60, 70, 60, 75,
 
 For each day, scan backwards to find the longest consecutive sequence of days with prices less than or equal to the current day's price.
 
-#### Implementation
+#### Implementations
 
 ```cpp
 #include <iostream>
@@ -24,7 +24,7 @@ using namespace std;
 vector<int> calculateSpanBruteForce(vector<int>& prices) {
     int n = prices.size();
     vector<int> span(n, 1); // Initialize all spans to 1
-    
+  
     for (int i = 1; i < n; i++) {
         int j = i - 1;
         // Look backwards while prices are less than or equal to current price
@@ -34,21 +34,21 @@ vector<int> calculateSpanBruteForce(vector<int>& prices) {
         // Span is the distance from current day to the day with higher price
         span[i] = i - j;
     }
-    
+  
     return span;
 }
 
 int main() {
     vector<int> prices = {100, 80, 60, 70, 60, 75, 85};
     vector<int> span = calculateSpanBruteForce(prices);
-    
+  
     cout << "Stock spans: [";
     for (int i = 0; i < span.size(); i++) {
         cout << span[i];
         if (i < span.size() - 1) cout << ", ";
     }
     cout << "]" << endl;
-    
+  
     return 0;
 }
 ```
@@ -76,11 +76,11 @@ vector<int> calculateSpan(vector<int>& prices) {
     int n = prices.size();
     vector<int> span(n);
     stack<int> s; // Stack to store indices of days
-    
+  
     // Span of first day is always 1
     span[0] = 1;
     s.push(0);
-    
+  
     // Calculate span for remaining days
     for (int i = 1; i < n; i++) {
         // Pop elements from stack while stack is not empty and prices of
@@ -88,31 +88,31 @@ vector<int> calculateSpan(vector<int>& prices) {
         while (!s.empty() && prices[s.top()] <= prices[i]) {
             s.pop();
         }
-        
+      
         // If stack becomes empty, all previous prices are less than or equal
         // to current price, so span is i + 1
         // Otherwise, span is the difference between current day and the day
         // at the top of stack (nearest day with higher price)
         span[i] = s.empty() ? i + 1 : i - s.top();
-        
+      
         // Push this day's index onto the stack
         s.push(i);
     }
-    
+  
     return span;
 }
 
 int main() {
     vector<int> prices = {100, 80, 60, 70, 60, 75, 85};
     vector<int> span = calculateSpan(prices);
-    
+  
     cout << "Stock spans: [";
     for (int i = 0; i < span.size(); i++) {
         cout << span[i];
         if (i < span.size() - 1) cout << ", ";
     }
     cout << "]" << endl;
-    
+  
     return 0;
 }
 ```
@@ -177,14 +177,14 @@ using namespace std;
 class StockSpanner {
 private:
     stack<pair<int, int>> s; // Stack of (price, span) pairs
-    
+  
 public:
     StockSpanner() {
     }
-    
+  
     int next(int price) {
         int span = 1; // Span is at least 1 (the day itself)
-        
+      
         // Pop elements from stack while stack is not empty and prices of
         // stack top are less than or equal to current price
         while (!s.empty() && s.top().first <= price) {
@@ -192,10 +192,10 @@ public:
             span += s.top().second;
             s.pop();
         }
-        
+      
         // Push the current price and its span to the stack
         s.push({price, span});
-        
+      
         return span;
     }
 };
@@ -203,7 +203,7 @@ public:
 int main() {
     StockSpanner spanner;
     vector<int> prices = {100, 80, 60, 70, 60, 75, 85};
-    
+  
     cout << "Stock spans: [";
     for (int i = 0; i < prices.size(); i++) {
         int span = spanner.next(prices[i]);
@@ -211,14 +211,14 @@ int main() {
         if (i < prices.size() - 1) cout << ", ";
     }
     cout << "]" << endl;
-    
+  
     return 0;
 }
 ```
 
 #### Time and Space Complexity
 
-- Time Complexity: 
+- Time Complexity:
   - O(1) amortized per call to `next()`
   - O(n) total for n calls
 - Space Complexity: O(n) for the stack
@@ -239,34 +239,34 @@ using namespace std;
 vector<int> calculateSpanDP(vector<int>& prices) {
     int n = prices.size();
     vector<int> span(n, 1); // Initialize all spans to 1
-    
+  
     for (int i = 1; i < n; i++) {
         int j = i - 1;
-        
+      
         // Use previously calculated spans to skip days
         while (j >= 0 && prices[j] <= prices[i]) {
             // Jump directly to the day before the span of j
             j = j - span[j];
         }
-        
+      
         // Span is the distance from current day to j
         span[i] = i - j;
     }
-    
+  
     return span;
 }
 
 int main() {
     vector<int> prices = {100, 80, 60, 70, 60, 75, 85};
     vector<int> span = calculateSpanDP(prices);
-    
+  
     cout << "Stock spans: [";
     for (int i = 0; i < span.size(); i++) {
         cout << span[i];
         if (i < span.size() - 1) cout << ", ";
     }
     cout << "]" << endl;
-    
+  
     return 0;
 }
 ```
@@ -294,35 +294,35 @@ vector<int> calculateSpanPair(vector<int>& prices) {
     int n = prices.size();
     vector<int> span(n);
     stack<pair<int, int>> s; // Stack to store (price, index) pairs
-    
+  
     for (int i = 0; i < n; i++) {
         // Pop elements from stack while stack is not empty and prices of
         // stack top are less than or equal to current price
         while (!s.empty() && s.top().first <= prices[i]) {
             s.pop();
         }
-        
+      
         // If stack becomes empty, span is i + 1, otherwise it's i - j
         span[i] = s.empty() ? i + 1 : i - s.top().second;
-        
+      
         // Push this day's price and index onto the stack
         s.push({prices[i], i});
     }
-    
+  
     return span;
 }
 
 int main() {
     vector<int> prices = {100, 80, 60, 70, 60, 75, 85};
     vector<int> span = calculateSpanPair(prices);
-    
+  
     cout << "Stock spans: [";
     for (int i = 0; i < span.size(); i++) {
         cout << span[i];
         if (i < span.size() - 1) cout << ", ";
     }
     cout << "]" << endl;
-    
+  
     return 0;
 }
 ```
@@ -350,14 +350,14 @@ vector<int> maxSpanBetweenSimilarPrices(vector<int>& prices) {
     int n = prices.size();
     vector<int> result(n, 0);
     unordered_map<int, int> lastSeen;
-    
+  
     for (int i = 0; i < n; i++) {
         if (lastSeen.find(prices[i]) != lastSeen.end()) {
             result[i] = i - lastSeen[prices[i]];
         }
         lastSeen[prices[i]] = i;
     }
-    
+  
     return result;
 }
 ```
@@ -369,33 +369,33 @@ vector<int> weightedStockSpan(vector<int>& prices, vector<int>& weights) {
     int n = prices.size();
     vector<int> span(n);
     stack<int> s;
-    
+  
     for (int i = 0; i < n; i++) {
         while (!s.empty() && prices[s.top()] <= prices[i]) {
             s.pop();
         }
-        
+      
         int j = s.empty() ? -1 : s.top();
         span[i] = 0;
-        
+      
         // Calculate weighted span
         for (int k = j + 1; k <= i; k++) {
             span[i] += weights[k];
         }
-        
+      
         s.push(i);
     }
-    
+  
     return span;
 }
 ```
 
 ## Summary
 
-| Approach | Time Complexity | Space Complexity | Notes |
-| --- | --- | --- | --- |
-| Brute Force | O(n²) | O(n) | Simple but inefficient for large inputs |
-| Stack-based | O(n) | O(n) | Efficient solution using a monotonic stack |
-| Online Stock Span | O(n) | O(n) | Stream processing approach |
-| Dynamic Programming | O(n) to O(n²) | O(n) | Uses previous spans to optimize |
-| Stack with Pairs | O(n) | O(n) | More readable with price-index pairs |
+| Approach            | Time Complexity | Space Complexity | Notes                                      |
+| ------------------- | --------------- | ---------------- | ------------------------------------------ |
+| Brute Force         | O(n²)          | O(n)             | Simple but inefficient for large inputs    |
+| Stack-based         | O(n)            | O(n)             | Efficient solution using a monotonic stack |
+| Online Stock Span   | O(n)            | O(n)             | Stream processing approach                 |
+| Dynamic Programming | O(n) to O(n²)  | O(n)             | Uses previous spans to optimize            |
+| Stack with Pairs    | O(n)            | O(n)             | More readable with price-index pairs       |
