@@ -2,6 +2,9 @@
 
 ## Vector
 
+- accumulate: 
+  
+
 Algorithms for binary search - works on a sorted vectors
 
 - lower_bound(first, last, value, [comp])

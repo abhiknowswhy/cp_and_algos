@@ -5,6 +5,9 @@
 **Counting Sort** is a **non-comparative**, **integer sorting algorithm**.
 It works by **counting the frequency** of each element in the input and then **computing their positions** in the sorted array.
 
+
+[Video explanation](https://www.youtube.com/watch?v=EItdcGhSLf4)
+
 ---
 
 ### 🔸 When to Use
@@ -18,10 +21,10 @@ It works by **counting the frequency** of each element in the input and then **c
 
 ### 🔸 Time and Space Complexity
 
-| Case                                                       | Time         |
-| ---------------------------------------------------------- | ------------ |
-| Best / Avg / Worst                                         | **O(n + k)** |
-| `n` = number of elements, `k` = range of input (max value) |              |
+| Case                                                           | Time               |
+| -------------------------------------------------------------- | ------------------ |
+| Best / Avg / Worst                                             | **O(n + k)** |
+| `n` = number of elements, `k` = range of input (max value) |                    |
 
 🧠 **Note:** It does not use comparisons, so it’s not subject to O(n log n) lower bound of comparison sorts.
 

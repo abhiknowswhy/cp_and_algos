@@ -17,9 +17,9 @@ Let’s say we are sorting the list:
 
 ### Time and Space Complexity
 
-| Case                                                                              | Time Complexity |
-| --------------------------------------------------------------------------------- | --------------- |
-| Best / Average / Worst                                                            | O(d × (n + k))  |
+| Case                                                                                    | Time Complexity |
+| --------------------------------------------------------------------------------------- | --------------- |
+| Best / Average / Worst                                                                  | O(d × (n + k)) |
 | `n` = number of elements, `d` = max number of digits, `k` = base (10 for decimal) |                 |
 
 - **Efficient when** `d` is not large compared to `n`
@@ -314,23 +314,3 @@ int main() {
     return 0;
 }
 ```
-
----
-
-### Trivia
-
-- A non-comparative sorting algorithm does not rely on comparisons. Instead, it uses properties of the data (like digits or characters) to sort.
-- Non-comparative sorts
-
-  - Counting Sort – uses frequency counts.
-  - Radix Sort – uses digits or characters to bucket items.
-  - Bucket Sort – distributes elements into "buckets" based on value ranges.
-
-- A sorting algorithm is stable if it preserves the relative order of elements that are equal.
-
-| Stable         | Not Stable     |
-| -------------- | -------------- |
-| Merge Sort     | Quick Sort     |
-| Bubble Sort    | Heap Sort      |
-| Insertion Sort | Selection Sort |
-| Radix Sort     | -              |
