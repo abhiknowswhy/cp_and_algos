@@ -165,6 +165,8 @@ Manacher's algorithm is a specialized technique that solves the longest palindro
 3. Leverage the symmetry of palindromes to avoid redundant comparisons
 4. Expand around centers where needed
 
+A good explanation of Manacher's Algorithm : [LINK](https://www.youtube.com/watch?v=V-sEwsca1ak)
+
 #### C++ Implementation (Manacher's Algorithm)
 
 ```cpp
