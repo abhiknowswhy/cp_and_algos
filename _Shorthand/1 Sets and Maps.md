@@ -127,3 +127,119 @@ unordered_map<string, int> um;
 um["apple"] = 5;
 um.insert({"banana", 3});  // Order not guaranteed
 ```
+
+### Custom Hash Functions for Non-Primitive Types in `unordered_map`
+
+When using **`unordered_map`** or **`unordered_set`** with *non-primitive* or *custom data types* (like structs or pairs), you must define how to **hash** and **compare** these objects — since the STL doesn’t automatically know how to do that.
+
+#### Why Needed
+
+The hash table inside an `unordered_map` needs two things for your key type:
+
+1. **Hash function** – Converts the key into a `size_t` hash value.
+2. **Equality function** – Checks if two keys are equal (defaults to `operator==`).
+
+Primitive types (like `int`, `string`, `double`) already have these defined, but custom structs or pairs do not.
+
+---
+
+#### Example 1: Using Custom Struct as Key
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Point {
+    int x, y;
+
+    bool operator==(const Point &other) const {
+        return x == other.x && y == other.y;
+    }
+};
+
+// Define custom hash function
+struct PointHash {
+    size_t operator()(const Point &p) const {
+        // Combine hash of x and y
+        return hash<int>()(p.x) ^ (hash<int>()(p.y) << 1);
+    }
+};
+
+int main() {
+    unordered_map<Point, string, PointHash> umap;
+
+    umap[{1, 2}] = "A";
+    umap[{3, 4}] = "B";
+
+    for (auto &[k, v] : umap) {
+        cout << "(" << k.x << "," << k.y << ") => " << v << "\n";
+    }
+}
+```
+
+✅ **Key points:**
+
+* `operator==` is required to compare keys.
+* `operator()` in `PointHash` defines how to hash `Point`.
+* Use bitwise operations or functions like `std::hash_combine` (C++20) to mix values.
+
+---
+
+#### Example 2: Hashing Standard Containers (like `pair`)
+
+You can also define hash functions for STL containers such as `pair` or `tuple`.
+
+```cpp
+struct PairHash {
+    template <class T1, class T2>
+    size_t operator()(const pair<T1, T2> &p) const {
+        return hash<T1>()(p.first) ^ (hash<T2>()(p.second) << 1);
+    }
+};
+
+int main() {
+    unordered_map<pair<int, int>, string, PairHash> pairMap;
+    pairMap[{1, 2}] = "X";
+    pairMap[{3, 4}] = "Y";
+
+    for (auto &[k, v] : pairMap)
+        cout << "(" << k.first << "," << k.second << ") => " << v << "\n";
+}
+```
+
+---
+
+#### Example 3: Using Lambdas (C++20 Onwards)
+
+From C++20, you can also use **lambda-based custom hash** and equality directly:
+
+```cpp
+auto hash_pair = [](const pair<int, int> &p) {
+    return hash<int>()(p.first) ^ (hash<int>()(p.second) << 1);
+};
+
+auto eq_pair = [](const pair<int, int> &a, const pair<int, int> &b) {
+    return a == b;
+};
+
+unordered_map<pair<int, int>, string, decltype(hash_pair), decltype(eq_pair)>
+    umap(10, hash_pair, eq_pair);
+
+umap[{1, 2}] = "Hello";
+umap[{2, 3}] = "World";
+```
+
+---
+
+#### Best Practices
+
+* Always define `operator==` when using a custom type as key.
+* Keep your hash function **fast** and **uniformly distributed**.
+* Avoid collisions by combining multiple fields wisely (e.g., shifting and XOR).
+* For multiple fields, consider using `std::hash` recursively or `std::tie`.
+
+---
+
+Next Section Suggestion (if you plan to extend the blog):
+
+> **"Comparing Performance: Ordered vs Unordered Containers in Real Scenarios"** – a practical benchmark showing when `unordered_map` truly outperforms `map`.
